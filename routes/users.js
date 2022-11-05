@@ -1,26 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const dbutil = require('./../dbutil');
-
-async function getAllUsers(){
-    return await dbutil.connect(async (db, client)=>{
-        return db.collection('users').find().toArray();
-    });
-}
+const userUtils = require('../utils/usersUtils');
 
 router.param('userToken', async (req, res, next, userToken) => {
     // middleware for specific parameter 
-    let users = await getAllUsers();
+    let users = await userUtils.getAllUsers();
     req.user = users.filter(us => us.userToken == userToken)[0];
     next();
 });
+
 router.use((req,res,next)=>{
     // logger middleware for all routes
     console.log(req.originalUrl);
     next();
 });
 router.get('/', async (req,res) =>{
-    res.status(200).json(await getAllUsers());
+    res.status(200).json(await userUtils.getAllUsers());
 });
 
 router.post('/new', (req,res)=>{
