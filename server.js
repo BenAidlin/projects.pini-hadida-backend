@@ -21,6 +21,6 @@ if(port == undefined){
     console.log('no port specified - must have command line arg in the format "port:<port>" \n exiting...');
     return;
 }
-const portInt = parseInt(port);
+const portInt = process.env.PORT || parseInt(port);
 console.log(`listening on port ${portInt}...`)
 app.listen(parseInt(portInt));
