@@ -1,7 +1,13 @@
 require('dotenv').config();
+const bp = require('body-parser');
+const cookies = require('cookie-parser')
 const express = require('express');
 const app = express();
 
+// use cookies and request bodies
+app.use(bp.json());
+app.use(bp.urlencoded({ extended: true }))
+app.use(cookies())
 
 app.get('/', (req,res)=>{
     res.status(200).json({key: "Working"});
@@ -12,7 +18,7 @@ app.get('/download', (req,res)=>{
 });
 
 const userRouter = require('./routes/users');
-app.use('/users', userRouter);
+app.use('/api/users', userRouter);
 
 // must have command line arg in the format "port:<port>"
 const port = process.argv.filter(arg => arg.startsWith('port'))[0]?.split(':')[1];
