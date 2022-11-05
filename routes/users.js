@@ -19,8 +19,8 @@ router.use((req,res,next)=>{
     console.log(req.originalUrl);
     next();
 });
-router.get('/', (req,res) =>{
-    res.status(200).json([{userId: 1}, {userId: 2}]);
+router.get('/', async (req,res) =>{
+    res.status(200).json(await getAllUsers());
 });
 
 router.post('/new', (req,res)=>{
