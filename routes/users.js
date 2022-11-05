@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userUtils = require('../utils/usersUtils');
+const userUtils = require('../utils/users_utils');
 
 router.param('userToken', async (req, res, next, userToken) => {
     // middleware for specific parameter 

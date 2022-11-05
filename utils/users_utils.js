@@ -1,4 +1,4 @@
-const dbutil = require('../utils/dbUtils');
+const dbutil = require('./db_utils');
 
 async function getAllUsers(){
     return await dbutil.connect(async (db, client)=>{
