@@ -14,4 +14,13 @@ app.get('/download', (req,res)=>{
 
 const userRouter = require('./routes/users');
 app.use('/users', userRouter);
-app.listen(3001);
+
+// must have command line arg in the format "port:<port>"
+const port = process.argv.filter(arg => arg.startsWith('port'))[0]?.split(':')[1];
+if(port == undefined){
+    console.log('no port specified - must have command line arg in the format "port:<port>" \n exiting...');
+    return;
+}
+const portInt = parseInt(port);
+console.log(`listening on port ${portInt}...`)
+app.listen(parseInt(portInt));
