@@ -2,12 +2,16 @@ require('dotenv').config();
 const bp = require('body-parser');
 const cookies = require('cookie-parser')
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 // use cookies and request bodies
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }))
 app.use(cookies())
+
+// enable cors
+app.use(cors());
 
 app.get('/', (req,res)=>{
     res.status(200).json({key: "Working"});
