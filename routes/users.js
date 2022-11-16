@@ -43,7 +43,7 @@ router.post('/user/:potentialId', async(req,res) => {
         return;
     }
     res.status(200).json(
-        await userUtils.addUserFromPotentials(potentialId, req.query.rank, req.query.lastSubscriptionDate, req.query.joinDate));
+        await userUtils.addUserFromPotentials(potentialId, req.query.rank, req.query.lastSubscriptionDate, req.query.subscriptionTime, req.query.joinDate));
 });
 router.put('/user/sub-date/:userId', async(req,res) => {
     const userId = req.params.userId;

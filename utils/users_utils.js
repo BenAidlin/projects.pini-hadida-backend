@@ -62,7 +62,8 @@ async function checkIfAdmin(id){
 async function addUserFromPotentials(potentialId, rank, lastSubscriptionDate, joinDate){
     let potential = await getPotentialById(potentialId);
     if(potential != null){
-        potential = {...potential, rank: rank, lastSubscriptionDate: lastSubscriptionDate, joinDate: joinDate};
+        potential = {...potential,
+             rank: rank, lastSubscriptionDate: lastSubscriptionDate, subscriptionTime:subscriptionTime, joinDate: joinDate, admin: false};
         await addNewUser(potential);
         await removePotential(potentialId);        
     }            
