@@ -2,7 +2,7 @@ const e = require('express');
 const express = require('express');
 const router = express.Router();
 const userUtils = require('../utils/users_utils');
-
+//
 router.use((req,res,next)=>{
     // logger middleware for all routes
     console.log(req.originalUrl);
