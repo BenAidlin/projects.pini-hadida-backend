@@ -56,10 +56,11 @@ async function handleTokenLogIn(token){
 }
 
 async function checkIfAdmin(id){
+    if(id == null) return false;
     const user = await getUserById(id);
     return user.admin;
 }
-async function addUserFromPotentials(potentialId, rank, lastSubscriptionDate, joinDate){
+async function addUserFromPotentials(potentialId, rank, lastSubscriptionDate, subscriptionTime, joinDate){
     let potential = await getPotentialById(potentialId);
     if(potential != null){
         potential = {...potential,
@@ -68,10 +69,11 @@ async function addUserFromPotentials(potentialId, rank, lastSubscriptionDate, jo
         await removePotential(potentialId);        
     }            
 }
-async function updateSubDate(userId, time, newSubDate){
+async function updateUserData(userId, rank, lastSubscriptionDate, subscriptionTime, joinDate){
     return await dbutil.connect((db, client) => {
         return db.collection('users')
-        .updateOne({_id: new ObjectId(userId)}, {$set: {lastSubscriptionDate: newSubDate, subscriptionTime: time}});
+            .updateOne({_id: new ObjectId(userId)}, 
+            {$set: {rank: rank, lastSubscriptionDate: lastSubscriptionDate, subscriptionTime: subscriptionTime, joinDate: joinDate}});
     });
 }
 module.exports = { 
@@ -85,5 +87,5 @@ module.exports = {
     addUserFromPotentials: addUserFromPotentials,
     removeUser: removeUser,
     removePotential: removePotential,
-    updateSubDate: updateSubDate
+    updateUserData: updateUserData
 }

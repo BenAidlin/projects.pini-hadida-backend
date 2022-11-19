@@ -3,15 +3,20 @@ const bp = require('body-parser');
 const cookies = require('cookie-parser')
 const express = require('express');
 const cors = require('cors');
+var corsOptions = {
+    origin: ['http://localhost:3000', 'https://benaidlin.github.io'],
+    credentials: true
+}
 const app = express();
 
+// enable cors
+app.use(cors(corsOptions));
 // use cookies and request bodies
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }))
 app.use(cookies())
 
-// enable cors
-app.use(cors());
+
 
 app.get('/', (req,res)=>{
     res.status(200).json({key: "Working"});

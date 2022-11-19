@@ -45,20 +45,18 @@ router.post('/user/:potentialId', async(req,res) => {
     res.status(200).json(
         await userUtils.addUserFromPotentials(potentialId, req.query.rank, req.query.lastSubscriptionDate, req.query.subscriptionTime, req.query.joinDate));
 });
-router.put('/user/sub-date/:userId', async(req,res) => {
+router.put('/user/:userId', async(req,res) => {
     const userId = req.params.userId;
-    const time = req.query.time;
-    const newSubDate = req.query.subDate;
     const coockies = req.cookies;
     if(!(await userUtils.checkIfAdmin(coockies.secret))){
         res.status(401).send('missing cookie');
         return;
     }
-    if(userId == undefined || time == undefined) {
+    if(userId == undefined) {
         res.status(400).send('missing user id or time');
         return;
     }
-    res.status(200).json(await userUtils.updateSubDate(userId, time, newSubDate));
+    res.status(200).json(await userUtils.updateUserData(userId, req.query.rank, req.query.lastSubscriptionDate, req.query.subscriptionTime, req.query.joinDate));
 });
 router.delete('/user/:userId', async (req,res) => {
     const userId = req.params.userId;
