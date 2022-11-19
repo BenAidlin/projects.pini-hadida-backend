@@ -71,5 +71,18 @@ router.delete('/user/:userId', async (req,res) => {
     }
     res.status(200).json(await userUtils.removeUser(userId));
 });
+router.delete('/potential/:potentialId', async (req, res) => {
+    const potentialId = req.params.potentialId;
+    const coockies = req.cookies;
+    if(!(await userUtils.checkIfAdmin(coockies.secret))){
+        res.status(401).send('missing cookie');
+        return;
+    }
+    if(potentialId == undefined) {
+        res.status(400).send('missing user id');
+        return;
+    }
+    res.status(200).json(await userUtils.removePotential(potentialId));
+});
 
 module.exports = router;
