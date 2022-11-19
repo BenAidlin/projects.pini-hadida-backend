@@ -1,7 +1,8 @@
-const e = require('express');
 const express = require('express');
 const router = express.Router();
 const userUtils = require('../utils/users_utils');
+const asyncHandler = require('express-async-handler')
+
 //
 router.use((req,res,next)=>{
     // logger middleware for all routes
@@ -9,15 +10,15 @@ router.use((req,res,next)=>{
     next();
 });
 
-router.get('/', async (req,res) =>{
+router.get('/',asyncHandler(async (req,res) =>{
     // get all users
     res.status(200).json(await userUtils.getAllUsers());
-});
-router.get('/potentials', async(req,res) => {
+}));
+router.get('/potentials', asyncHandler(async(req,res) => {
     // get all potentials
     res.status(200).json(await userUtils.getAllPotentials());
-});
-router.post('/google-login', async(req,res) => {
+}));
+router.post('/google-login', asyncHandler(async(req,res) => {
     // new login in the system
     const token = req.body.token;
     if(token == undefined){
@@ -29,8 +30,8 @@ router.post('/google-login', async(req,res) => {
     if(result != null)
         res.cookie('secret',result._id.toString());
     res.status(200).json(result);    
-});
-router.post('/user/:potentialId', async(req,res) => {
+}));
+router.post('/user/:potentialId', asyncHandler(async(req,res) => {
     // add to users from potentials
     const potentialId = req.params.potentialId;
     const coockies = req.cookies;
@@ -44,8 +45,8 @@ router.post('/user/:potentialId', async(req,res) => {
     }
     res.status(200).json(
         await userUtils.addUserFromPotentials(potentialId, req.query.rank, req.query.lastSubscriptionDate, req.query.subscriptionTime, req.query.joinDate));
-});
-router.put('/user/:userId', async(req,res) => {
+}));
+router.put('/user/:userId', asyncHandler(async(req,res) => {
     const userId = req.params.userId;
     const coockies = req.cookies;
     if(!(await userUtils.checkIfAdmin(coockies.secret))){
@@ -57,8 +58,8 @@ router.put('/user/:userId', async(req,res) => {
         return;
     }
     res.status(200).json(await userUtils.updateUserData(userId, req.query.rank, req.query.lastSubscriptionDate, req.query.subscriptionTime, req.query.joinDate));
-});
-router.delete('/user/:userId', async (req,res) => {
+}));
+router.delete('/user/:userId', asyncHandler(async (req,res) => {
     const userId = req.params.userId;
     const coockies = req.cookies;
     if(!(await userUtils.checkIfAdmin(coockies.secret))){
@@ -70,8 +71,8 @@ router.delete('/user/:userId', async (req,res) => {
         return;
     }
     res.status(200).json(await userUtils.removeUser(userId));
-});
-router.delete('/potential/:potentialId', async (req, res) => {
+}));
+router.delete('/potential/:potentialId', asyncHandler(async (req, res) => {
     const potentialId = req.params.potentialId;
     const coockies = req.cookies;
     if(!(await userUtils.checkIfAdmin(coockies.secret))){
@@ -83,6 +84,6 @@ router.delete('/potential/:potentialId', async (req, res) => {
         return;
     }
     res.status(200).json(await userUtils.removePotential(potentialId));
-});
+}));
 
 module.exports = router;
