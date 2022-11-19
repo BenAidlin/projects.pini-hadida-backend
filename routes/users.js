@@ -28,7 +28,7 @@ router.post('/google-login', asyncHandler(async(req,res) => {
     let result = await userUtils.handleTokenLogIn(token);
     // set a cookie in case the user is an admin
     if(result != null)
-        res.cookie('secret',result._id.toString());
+        res.cookie('secret',result._id.toString(), { sameSite: 'none', secure: true});
     res.status(200).json(result);    
 }));
 router.post('/user/:potentialId', asyncHandler(async(req,res) => {
